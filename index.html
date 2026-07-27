@@ -39,6 +39,15 @@
     code { background: rgba(125,125,125,.15); padding: .15em .4em; border-radius: 6px; font-size: .9em; }
     li { margin: .4rem 0; }
     .hint { font-size: .9rem; opacity: .75; }
+    .share-btn {
+      display: inline-block; margin: .5rem 0 1rem; padding: .8rem 1.6rem;
+      font-size: 1.05rem; font-weight: 700; color: #fff; background: #1d9bf0;
+      border: none; border-radius: 999px; cursor: pointer;
+    }
+    .share-btn:hover { background: #1a8cd8; }
+    .chars { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .8rem; padding: 0; list-style: none; }
+    .chars li { margin: 0; text-align: center; font-size: .85rem; }
+    .chars img { width: 100%; height: auto; }
   </style>
 </head>
 <body>
@@ -52,6 +61,18 @@
     <li><a href="summary.html"><code>/summary.html</code></a> — 작은 정사각형 카드 (<code>summary</code>)</li>
   </ul>
 
+  <h2>🎲 랜덤 캐릭터 카드 공유</h2>
+  <p>아래 버튼을 누르면 <code>share/1</code>~<code>share/5</code> 중 하나가 랜덤으로 뽑혀서 트위터 공유창이 열려요. 각 경로는 카드 메타 전용이고, 사람이 열면 이 메인으로 리다이렉트됩니다.</p>
+  <button type="button" class="share-btn" id="share-tw">🐦 트위터에 랜덤 캐릭터 공유하기</button>
+  <p class="hint" id="share-result"></p>
+  <ul class="chars">
+    <li><a href="share/1/?stay"><img src="characters/char-1.png?v=1" alt="곰돌이 카드" loading="lazy" /></a>share/1 곰돌이 🐻</li>
+    <li><a href="share/2/?stay"><img src="characters/char-2.png?v=1" alt="냥냥이 카드" loading="lazy" /></a>share/2 냥냥이 🐱</li>
+    <li><a href="share/3/?stay"><img src="characters/char-3.png?v=1" alt="토깽이 카드" loading="lazy" /></a>share/3 토깽이 🐰</li>
+    <li><a href="share/4/?stay"><img src="characters/char-4.png?v=1" alt="개굴이 카드" loading="lazy" /></a>share/4 개굴이 🐸</li>
+    <li><a href="share/5/?stay"><img src="characters/char-5.png?v=1" alt="유령이 카드" loading="lazy" /></a>share/5 유령이 👻</li>
+  </ul>
+
   <h2>검증 도구</h2>
   <ul>
     <li><a href="https://developers.facebook.com/tools/debug/" target="_blank" rel="noopener">Facebook 공유 디버거</a></li>
@@ -61,5 +82,20 @@
   </ul>
 
   <p class="hint">💡 카드가 예전 것으로 나오면 캐시 때문일 수 있어요. 디버거에서 "다시 스크랩" 하거나 URL 뒤에 <code>?v=2</code> 같은 쿼리를 붙여보세요.</p>
+
+  <script>
+    const NAMES = { 1: "곰돌이 🐻", 2: "냥냥이 🐱", 3: "토깽이 🐰", 4: "개굴이 🐸", 5: "유령이 👻" };
+    document.getElementById("share-tw").addEventListener("click", () => {
+      const n = Math.floor(Math.random() * 5) + 1;
+      const url = `https://milmilkim.github.io/og-test/share/${n}/`;
+      const text = `오늘의 캐릭터는 ${NAMES[n]}!`;
+      document.getElementById("share-result").textContent = `🎲 ${NAMES[n]} (share/${n}) 당첨!`;
+      window.open(
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+        "_blank",
+        "noopener"
+      );
+    });
+  </script>
 </body>
 </html>
