@@ -69,24 +69,11 @@
     모바일에서 길게 눌러 저장하면 <b>사진첩(갤러리)으로 들어가요.</b> 단, 모달 화면에 대한 기획·디자인 작업이 추가로 필요해요.
   </p>
 
-  <button id="btn-image-here">4-1. 이미지 현재 창에서 열기</button>
+  <button id="btn-auto-modal" class="rec">5. 저장 (자동 분기)</button>
   <p class="desc">
-    지금 보고 있는 창이 이미지 화면으로 바뀌는 방식 (뒤로가기로 복귀). 유저가 <b>길게 눌러 저장하면 사진첩(갤러리)으로 저장</b>되는 건
-    4번 모달과 같은데, <b>별도 화면 디자인이 필요 없다</b>는 게 장점이에요. 팝업이라는 개념이 없어서 새 창을 막는
-    인앱 브라우저에서도 성공률이 높아요.
-  </p>
-
-  <button id="btn-auto-modal" class="rec">5. 저장 (자동 분기 · 모달 폴백)</button>
-  <p class="desc">
-    실전 권장 조합 A. <b>아이폰</b>은 공유 창을 열어 "이미지 저장"으로 사진첩 저장,
+    실전 권장 조합. <b>아이폰</b>은 공유 창을 열어 "이미지 저장"으로 사진첩 저장,
     <b>안드로이드</b>는 다운로드가 갤러리로 가지 않으므로 4번 모달을 띄워 길게 눌러 저장(갤러리행),
     <b>PC</b>는 파일 다운로드. 아이폰에서 공유가 실패해도 모달로 넘어가요.
-  </p>
-
-  <button id="btn-auto-image" class="rec">5-1. 저장 (자동 분기 · 이미지 열기 폴백)</button>
-  <p class="desc">
-    5번과 동일한 분기인데, 모달 대신 <b>4-1 이미지 현재 창 열기</b>로 넘어가는 버전.
-    모달 기획·디자인 추가 없이 갈 수 있는 조합이에요.
   </p>
 
   <div id="log"></div>
@@ -216,17 +203,9 @@ function openLongpress() {
 }
 document.getElementById('btn-longpress').addEventListener('click', openLongpress);
 
-/* ==== 4-1. 이미지 현재 창에서 열기 — 새 창을 막는 인앱 대비책. 팝업 개념이 없어 차단 불가, 뒤로가기로 복귀 ==== */
-function openImageHere() {
-  if (!cachedFile) { log('이미지 열기: 파일이 아직 준비되지 않음', false); return; }
-  log('현재 창에서 이미지로 이동 — 길게 눌러 저장 후 뒤로가기');
-  location.href = URL.createObjectURL(cachedFile);
-}
-document.getElementById('btn-image-here').addEventListener('click', openImageHere);
-
-/* ==== 5, 5-1. 저장 자동 분기
+/* ==== 5. 저장 자동 분기
    - 아이폰: 공유시트 — 공유 창의 "이미지 저장"이 사진첩으로 가는 유일한 웹 경로. 실패 시 폴백
-   - 안드로이드: 폴백(모달/이미지 열기) — 다운로드는 갤러리에 보이지 않으므로 길게 눌러 저장 유도
+   - 안드로이드: 저장 모달 폴백 — 다운로드는 갤러리에 보이지 않으므로 길게 눌러 저장 유도
    - PC: 파일 다운로드 (PC도 canShare가 YES라 기능 감지만으론 부족 → UA로 판별) ==== */
 async function saveAuto(fallback, fallbackName) {
   if (isIOS && cachedFile && navigator.canShare?.({ files: [cachedFile] })) {
@@ -249,7 +228,6 @@ async function saveAuto(fallback, fallbackName) {
   downloadBlob();
 }
 document.getElementById('btn-auto-modal').addEventListener('click', () => saveAuto(openLongpress, '저장 모달'));
-document.getElementById('btn-auto-image').addEventListener('click', () => saveAuto(openImageHere, '이미지 열기'));
 </script>
 </body>
 </html>
