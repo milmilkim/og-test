@@ -87,7 +87,7 @@
     const NAMES = { 1: "곰돌이 🐻", 2: "냥냥이 🐱", 3: "토깽이 🐰", 4: "개굴이 🐸", 5: "유령이 👻" };
     document.getElementById("share-tw").addEventListener("click", () => {
       const n = Math.floor(Math.random() * 5) + 1;
-      const url = `https://milmilkim.github.io/og-test/share/${n}/`;
+      const url = `https://og-test-tawny.vercel.app/og-test/share/${n}/`;
       const text = `오늘의 캐릭터는 ${NAMES[n]}!`;
       document.getElementById("share-result").textContent = `🎲 ${NAMES[n]} (share/${n}) 당첨!`;
       window.open(
