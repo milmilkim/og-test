@@ -63,6 +63,13 @@
     인앱 브라우저에서는 종류에 따라 다운로드 대신 <b>이미지가 새 창으로 뜨기도 하고</b>(길게 눌러 저장은 가능), 아무 반응이 없을 수도 있어요(카톡 등).
   </p>
 
+  <button id="btn-download-data">3-1. &lt;a download&gt; + dataURL (카카오 인앱 방식)</button>
+  <p class="desc">
+    3번과 같은 파일 다운로드인데 파일 데이터를 담는 방식만 다른(blob → dataURL) 버전.
+    카카오 공식 FAQ가 <b>카톡 인앱 브라우저(iOS)에서는 이 방식만 지원</b>한다고 안내하고 있어서,
+    카톡 인앱 감지 시 이 방식으로 분기하는 용도예요. 일반 브라우저에서도 동일하게 동작해요.
+  </p>
+
   <button id="btn-longpress">4. 길게 눌러 저장 모달</button>
   <p class="desc">
     이미지를 화면에 크게 띄우고 유저가 직접 길게 눌러 저장하는 방식. <b>인앱 포함 거의 모든 환경에서 동작하는 최후의 수단</b>이고,
@@ -193,6 +200,20 @@ function downloadBlob() {
   }, 'image/png');
 }
 document.getElementById('btn-download').addEventListener('click', downloadBlob);
+
+/* ==== 3-1. a[download] + dataURL — 카카오 인앱 FAQ가 iOS에서 지원한다고 안내하는 방식 ==== */
+function downloadDataUrl() {
+  try {
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = 'test-' + resvNo + '.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    log('a[download]+dataURL click 실행됨 — 실제 저장 여부는 눈으로 확인', true);
+  } catch (e) {
+    log('a[download]+dataURL 실패: ' + e, false);
+  }
+}
+document.getElementById('btn-download-data').addEventListener('click', downloadDataUrl);
 
 /* ==== 4. 길게 눌러 저장 모달 ==== */
 const modal = document.getElementById('modal');
